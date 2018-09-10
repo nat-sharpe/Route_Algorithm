@@ -89,20 +89,74 @@ let testGraph = {
         }
     };
 
-const quickestRoute = (start, end, graph) => {
-    let allRoutes = {20 :'bgt-atl-', 9 : 'bgt-hsv-atl-', 22 : 'bgt-clt-atl-', 26 : 'bgt-gfk-atl-'};
+let testAllRoutes = {9: 'bgt-hsv-atl-', 20 :'bgt-atl-', 22 : 'bgt-clt-atl-', 26 : 'bgt-gfk-atl-'};
 
+const quickestRoute = (start, end, graph) => {
+    console.log(end);
+    console.log(start);
+    let quickestRoute;
+    let allRoutes = {}; 
+
+   
+    
     let findQuickestRoute = () => {
         let times = Object.keys(allRoutes); 
         times.sort((a, b) => a - b);
-        let quickestRoute = times[0];
-        console.log(allRoutes[quickestRoute])
-        return allRoutes[quickestRoute];
+        let quickest = times[0];
+        return allRoutes[quickest];
     }
 
-    let calculateRoute = () => {};
+    let curTime = 0;
+    let curRoute = [];
 
-    return findQuickestRoute();
+    let connectedCities = Object.keys(graph[start]);
+    console.log(connectedCities);
+    for (let ii = 0; ii < connectedCities.length; ii++) {
+        let city = connectedCities[ii];
+        curRoute.push(start);
+        console.log(city);
+        console.log(curRoute)
+        if (curRoute.includes(city) == false) {
+            curRoute.push(city);
+            curTime+= graph[start][city];
+            console.log(curTime);
+            console.log(curRoute);
+            if (city == end) {
+                allRoutes[curTime] = curRoute;
+                curTime = 0;
+                curRoute = [];
+            } else {
+                curTime = 0;
+                curRoute = [];
+            }
+        };
+    };
+    console.log(allRoutes);
+    // let mapEachRoute = (city) => {
+        
+    //     let connectedCities = Object.keys(graph[city]);
+    //     console.log(connectedCities);
+    //     for (let ii = 0; ii < connectedCities.length; ii++) {
+    //         let curTime = 9
+    //         let curRoute = '';
+    //         if (connectedCities[ii] == end) {
+    //             curRoute+= `${connectedCities[ii]}`;
+    //             console.log(curRoute);
+    //         } else {
+    //             mapEachRoute(connectedCities[ii]);
+    //         }
+        //     while (foundEnd === false) {
+        //         if (connectedCities[ii] === end) {
+        //             foundEnd = true;
+        //         } else {
+        //             mapEachRoute(connectedCities[ii]);
+        //         }
+        //     }
+        // };
+    // quickestRoute = findQuickestRoute();
+    // return quickestRoute;
 };
 
-console.assert(quickestRoute('bgt', 'atl', testGraph) === 'bgt-hsv-atl-');
+console.log(quickestRoute('bgt', 'atl', testGraph));
+
+// console.assert(quickestRoute('bgt', 'atl', testGraph) === 'bgt-hsv-atl-');
